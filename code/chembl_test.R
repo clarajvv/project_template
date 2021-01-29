@@ -12,7 +12,7 @@ library(httr)
 # install.packages('devtools')
 library(devtools)
 # devtools::install_github('rajarshi/chemblr/package')
-library(chemblr)
+#library(chemblr)
 library(sjmisc)
 
 
@@ -29,6 +29,20 @@ proteinas_targets <- scan(file = "data/proteinas_chembl.txt", what = character()
 proteinas_targets_segundo_grado <- scan(file = "data/proteinas_chembl_segundo_grado.txt", what = character())
 
 # Probar con interaction score o more than 5 interactors
+
+
+
+
+#################################################################
+################### URLS ########################################
+#################################################################
+
+## VARIABLES GLOBALES
+
+URL_ROOT <- "https://www.ebi.ac.uk/chembl/api/data"
+DEFAULT_ENCODING <- "UTF-8"
+JSONFORMAT <- "&format=json"
+
 
 
 
@@ -57,7 +71,7 @@ get_all_drugs <- function(fase_farmaco){
                             paste("molecule?limit=",limite_farmacos,
                                   "&offset=", offset_farmacos,
                                   "&max_phase=",fase_farmacos, 
-                                  json_format, 
+                                  JSONFORMAT, 
                                   sep = ""))
   
   farmacos_pagina_1 <- get_objects2(URL_farmacos)
@@ -79,7 +93,7 @@ get_all_drugs <- function(fase_farmaco){
                               paste("molecule?limit=",limite_farmacos,
                                     "&offset=", offset_farmacos,
                                     "&max_phase=",fase_farmacos, 
-                                    json_format, 
+                                    JSONFORMAT, 
                                     sep = ""))
     farmacos_pagina <- get_objects2(URL_farmacos)
     
@@ -144,7 +158,7 @@ get_targets <- function(drug_vector, proteinas_targets, drug_info){
     URL_targets <- file.path(URL_ROOT, 
                              paste("mechanism?molecule_chembl_id=", 
                                    id_farmaco, 
-                                   json_format, 
+                                   JSONFORMAT, 
                                    sep = ""))
     mechanism <- get_objects2(URL_targets)
     num_targets <- mechanism$page_meta$total_count
@@ -215,18 +229,6 @@ get_drug_info <- function(tablaInfo, drugID, drugPos, drugInfo, mechanism, targe
   return(tablaInfo)
   
 }
-
-
-
-
-#################################################################
-################### URLS ########################################
-#################################################################
-
-## Ruta raiz
-
-URL_ROOT <- "https://www.ebi.ac.uk/chembl/api/data"
-DEFAULT_ENCODING <- "UTF-8"
 
 
 
