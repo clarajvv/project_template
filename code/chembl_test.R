@@ -12,8 +12,13 @@ library(httr)
 # install.packages('devtools')
 library(devtools)
 # devtools::install_github('rajarshi/chemblr/package')
-#library(chemblr)
+library(chemblr)
 library(sjmisc)
+library(tidyverse)
+# install.packages(""networkD3"")
+library(networkD3)
+library(magrittr)
+
 
 
 
@@ -322,4 +327,83 @@ URL_targets <- file.path(URL_ROOT,
 mecanismo_farmaco_X <- get_objects2(URL_targets)
 num_targets_farmacoX <- mecanismo_farmaco_X$page_meta$total_count
 mecanismo_farmaco_X$mechanisms[[2]]$target_chembl_id
+
+
+#################################################################
+################### GRAFICAS #############################
+#################################################################
+
+view_Action_Type <- function(type_target){
+  num <- c()
+  names <- c()
+  for (i in 2:length(type_target)) {
+    
+    x <- type_target[[i]]
+    y <- length(type_target[type_target == type_target[[i]] & !is.na(type_target)])
+    names <- append(names, x)
+    num <- append(num, y)
+    
+  }
+  data <- data.frame(names,num)
+  grapic <- data[!duplicated(data$names), ]
+  plot(num~factor(names),grapic,las=2, xlab="", main ="Cantidad de tipos de activos")
+  return(grapic)
+}
+
+#para guardar las gráficas realizadas
+#tipos de activadores
+jpeg(file="action_protein_1g.jpeg")
+action_protein_1g <- view_Action_Type(targets_proteinas_1g$df_informacion_farmacos$action_type)
+jpeg(file="action_protein_2g.jpeg")
+action_protein_2g <- view_Action_Type(targets_proteinas_2g$df_informacion_farmacos$action_type)
+jpeg(file="action_protein_1g_f3.jpeg")
+action_protein_1g_f3 <- view_Action_Type(targets_proteinas_1g_f3$df_informacion_farmacos$action_type)
+jpeg(file="action_protein_2g_f3.jpeg")
+action_protein_2g_f3 <- view_Action_Type(targets_proteinas_2g_f3$df_informacion_farmacos$action_type)
+dev.off()
+
+#mechanismos de acción
+jpeg(file="mechanism_protein_1g.jpeg")
+mechanism_protein_1g <- view_Action_Type(targets_proteinas_1g$df_informacion_farmacos$mechanism_of_action)
+jpeg(file="mechanism_protein_2g.jpeg")
+mechanism_protein_2g <- view_Action_Type(targets_proteinas_2g$df_informacion_farmacos$mechanism_of_action)
+jpeg(file="mechanism_protein_1g_f3.jpeg")
+mechanism_protein_1g_f3 <- view_Action_Type(targets_proteinas_1g_f3$df_informacion_farmacos$mechanism_of_action)
+jpeg(file="mechanism_protein_2g_f3.jpeg")
+mechanism_protein_2g_f3 <- view_Action_Type(targets_proteinas_2g_f3$df_informacion_farmacos$mechanism_of_action)
+dev.off()
+
+
+
+#red de interacción
+
+view_Interaction <- function(comp, type, drug){
+  proteins <- c()
+  list_name <- c()
+  for(i in 1:length(comp)){
+    for(j in 1:length(type[[i]])){
+      prot <- type[[i]][j]
+      proteins <- append(proteins, prot)
+      name <- comp[i]
+      list_name <- append(list_name, name)
+    }
+  }
+  inter <- data.frame(list_name, proteins)
+  network <- simpleNetwork(inter) 
+  file_name <- paste(drug, "html", sep = ".")
+  print(file_name)
+  saveNetwork(network, file=file_name)
+  return(inter)
+}
+
+compound1 <- c("CHEMBL3833061","CHEMBL1937","CHEMBL2012","CHEMBL2363042","CHEMBL2023","CHEMBL1873","CHEMBL2524","CHEMBL2364701","CHEMBL1993","CHEMBL2095186","CHEMBL2363065","CHEMBL287","CHEMBL3580485","CHEMBL2364188")
+interact_graphic1<- view_Interaction(compound1, targets_proteinas_1g$lista_target_drug, "targets_proteinas_1g")
+
+compound2 <- c("CHEMBL3833061","CHEMBL1937","CHEMBL2363042","CHEMBL2524","CHEMBL2364701","CHEMBL1993","CHEMBL2363065","CHEMBL2364188")
+interact_graphic2<- view_Interaction(compound2, targets_proteinas_2g$lista_target_drug, "targets_proteinas_2g")
+
+
+
+
+
 
