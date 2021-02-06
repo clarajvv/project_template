@@ -380,14 +380,19 @@ dev.off()
 
 #red de interacción
 
-view_Interaction <- function(comp, type, drug){
+view_Interaction <- function(type, drug){
   proteins <- c()
   list_name <- c()
-  for(i in 1:length(comp)){
+  targets <- c()
+  for(i in 1:length(type)){
+    target <- attributes(type[i])
+    targets <- append(targets, target$names)
+  }
+  for(i in 1:length(targets)){
     for(j in 1:length(type[[i]])){
       prot <- type[[i]][j]
       proteins <- append(proteins, prot)
-      name <- comp[i]
+      name <- targets[i]
       list_name <- append(list_name, name)
     }
   }
@@ -399,11 +404,9 @@ view_Interaction <- function(comp, type, drug){
   return(inter)
 }
 
-compound1 <- c("CHEMBL3833061","CHEMBL1937","CHEMBL2012","CHEMBL2363042","CHEMBL2023","CHEMBL1873","CHEMBL2524","CHEMBL2364701","CHEMBL1993","CHEMBL2095186","CHEMBL2363065","CHEMBL287","CHEMBL3580485","CHEMBL2364188")
-interact_graphic1<- view_Interaction(compound1, targets_proteinas_1g$lista_target_drug, "targets_proteinas_1g")
+interact_graphic1<- view_Interaction(targets_proteinas_1g$lista_target_drug, "targets_proteinas_1g")
 
-compound2 <- c("CHEMBL3833061","CHEMBL1937","CHEMBL2363042","CHEMBL2524","CHEMBL2364701","CHEMBL1993","CHEMBL2363065","CHEMBL2364188")
-interact_graphic2<- view_Interaction(compound2, targets_proteinas_2g$lista_target_drug, "targets_proteinas_2g")
+interact_graphic2<- view_Interaction(targets_proteinas_2g$lista_target_drug, "targets_proteinas_2g")
 
 
 
