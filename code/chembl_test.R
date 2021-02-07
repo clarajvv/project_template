@@ -291,66 +291,6 @@ targets_proteinas_2g <- get_targets(drug_vector = farmacos_ids_fase, proteinas_t
 ################### Pruebas(borrar) #############################
 #################################################################
 
-limite_farmacos <- 1000 #Número de fármacos por página
-fase_farmacos <- fase_farmaco #Fase en el que se encuentra un fármaco (en fase 4 ya está aprobado)
-offset_farmacos <- 0 #Posición del fármaco que se muestra el primero en la página (pasar página)
-
-URL_farmacos <- file.path(URL_ROOT, 
-                          paste("molecule?limit=",limite_farmacos,
-                                "&offset=", offset_farmacos,
-                                "&max_phase=",fase_farmacos, 
-                                json_format, 
-                                sep = ""))
-
-farmacos_pagina_1 <- get_objects2(URL_farmacos)
-# Nos traemos los primeros 1000 farmacos
-farmacos_pagina_2 <- get_objects2(URL_farmacos)
-# Numero total de farmacos
-num_farmacos_tot <- round(farmacos_pagina_1$page_meta$total_count)
-# Numero de paginas si mostramos con pagina 1000
-num_paginas <- ceiling(num_farmacos_tot/limite_farmacos)
-
-# Chembl id de los farmacos
-farmaco1_id <- farmacos_pagina_1$molecules[[1]]$molecule_chembl_id
-farmaco1_molecula <- farmacos_pagina_1$molecules[[1]]
-
-
-farmaco2_id <- farmacos_pagina_1$molecules[[2]]$molecule_chembl_id
-# ...
-farmaco1000_id <- farmacos_pagina_1$molecules[[1000]]$molecule_chembl_id
-
-# Teniendo el id de un farmaco, podemos ver sus target
-id_farmaco <- farmaco1_id
-URL_targets <- file.path(URL_ROOT, 
-                         paste("mechanism?molecule_chembl_id=", 
-                               id_farmaco, 
-                               json_format, 
-                               sep = ""))
-mecanismo_farmaco_1 <- get_objects2(URL_targets)
-num_mecanismos_farmaco1 <- mecanismo_farmaco_1$page_meta$total_count
-
-targets_farmaco1 <- mecanismo_farmaco_1$mechanisms[[1]]$target_chembl_id
-
-id_farmaco <- farmaco2_id
-URL_targets <- file.path(URL_ROOT, 
-                         paste("mechanism?molecule_chembl_id=", 
-                               id_farmaco, 
-                               json_format, 
-                               sep = ""))
-mecanismo_farmaco_2 <- get_objects2(URL_targets)
-num_targets_farmaco2 <- length(mecanismo_farmaco_2$mechanisms[[1]]$target_chembl_id)
-targets_farmaco2 <- mecanismo_farmaco_2$mechanisms[[1]]$target_chembl_id
-
-id_farmaco <- "CHEMBL9"
-URL_targets <- file.path(URL_ROOT, 
-                         paste("mechanism?molecule_chembl_id=", 
-                               id_farmaco, 
-                               json_format, 
-                               sep = ""))
-mecanismo_farmaco_X <- get_objects2(URL_targets)
-num_targets_farmacoX <- mecanismo_farmaco_X$page_meta$total_count
-mecanismo_farmaco_X$mechanisms[[2]]$target_chembl_id
-
 
 #################################################################
 ################### GRAFICAS #############################
@@ -375,9 +315,9 @@ view_Action_Type <- function(type_target){
 
 #para guardar las gráficas realizadas
 #tipos de activadores
-jpeg(file="action_protein_1g.jpeg")
+jpeg(file="../results/action_protein_1g.jpeg")
 action_protein_1g <- view_Action_Type(targets_proteinas_1g$df_informacion_farmacos$action_type)
-jpeg(file="action_protein_2g.jpeg")
+jpeg(file="../results/action_protein_2g.jpeg")
 action_protein_2g <- view_Action_Type(targets_proteinas_2g$df_informacion_farmacos$action_type)
 #jpeg(file="action_protein_1g_f3.jpeg")
 #action_protein_1g_f3 <- view_Action_Type(targets_proteinas_1g_f3$df_informacion_farmacos$action_type)
@@ -386,9 +326,9 @@ action_protein_2g <- view_Action_Type(targets_proteinas_2g$df_informacion_farmac
 dev.off()
 
 #mechanismos de acción
-jpeg(file="mechanism_protein_1g.jpeg")
+jpeg(file="../results/mechanism_protein_1g.jpeg")
 mechanism_protein_1g <- view_Action_Type(targets_proteinas_1g$df_informacion_farmacos$mechanism_of_action)
-jpeg(file="mechanism_protein_2g.jpeg")
+jpeg(file="../results/mechanism_protein_2g.jpeg")
 mechanism_protein_2g <- view_Action_Type(targets_proteinas_2g$df_informacion_farmacos$mechanism_of_action)
 #jpeg(file="mechanism_protein_1g_f3.jpeg")
 #mechanism_protein_1g_f3 <- view_Action_Type(targets_proteinas_1g_f3$df_informacion_farmacos$mechanism_of_action)
@@ -424,9 +364,9 @@ view_Interaction <- function(type, drug){
   return(inter)
 }
 
-interact_graphic1<- view_Interaction(targets_proteinas_1g$lista_target_drug, "targets_proteinas_1g")
+interact_graphic1<- view_Interaction(targets_proteinas_1g$lista_target_drug, "../results/targets_proteinas_1g")
 
-interact_graphic2<- view_Interaction(targets_proteinas_2g$lista_target_drug, "targets_proteinas_2g")
+interact_graphic2<- view_Interaction(targets_proteinas_2g$lista_target_drug, "../results/targets_proteinas_2g")
 
 
 
