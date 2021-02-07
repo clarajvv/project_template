@@ -9,7 +9,8 @@
 
 dir <- getwd()
 libr <- paste(dir,"/software/deps", sep = "")
-.libPaths(libr)
+.libPaths(c(libr, .libPaths()))
+
 
 
 #Las librerias se tienen que instalar en la carpeta SOFTWARE

@@ -2,7 +2,7 @@
 mkdir software software/deps
 chmod 755 software/deps
 
-paquetesCRAN="'jsonlite' 'httr' 'devtools' 'sjmisc' 'tidyverse' 'networkD3' 'magrittr'"
+paquetesCRAN="'jsonlite' 'httr' 'devtools' 'sjmisc' 'tidyverse' 'networkD3' 'magrittr' "
 
 paquetesDevtools="'rajarshi/chemblr/package'"
 
@@ -15,4 +15,3 @@ for paqueteDevtools in $paquetesDevtools
 	do 
 		Rscript -e 'devtools::install_github('$paqueteDevtools', lib = "software/deps" )'
 	done
-	

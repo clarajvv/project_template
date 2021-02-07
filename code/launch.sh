@@ -1,5 +1,3 @@
-#/bin/bash 
-
+#/bin/bash
 chmod +x chembl_test.R
-
-Rscript chembl_test.r $1
+Rscript chembl_test.R $1
