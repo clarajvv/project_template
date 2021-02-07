@@ -246,23 +246,42 @@ get_drug_info <- function(tablaInfo, drugID, drugPos, drugInfo, mechanism, targe
 ################### EJECUCION ###################################
 #################################################################
 
-# Todos los fármacos en fase 4. Tanto para proteinas de 1 y 2 grado
+args = commandArgs(trailingOnly=TRUE)
 
-farmacos_fase4 <- get_all_drugs(fase_farmaco = 4)
-farmacos_ids_fase4 <- farmacos_fase4[["vector_farmacos_ids"]]
-farmacos_info_fase4 <- farmacos_fase4[["info_farmacos"]]
+if (length(args)==0) {
+  stop("Debe indicar la fase del fármaco", call.=FALSE)
+} else if (length(args)==1) {
+  if (args == 3) {
+    args[2] = "3"
+  } else if (args == 4) {
+    args[2] = "4"
+  }
+}
+
+farmacos_fase <- get_all_drugs(fase_farmaco = args[2])
+farmacos_ids_fase <- farmacos_fase[["vector_farmacos_ids"]]
+farmacos_info_fase <- farmacos_fase[["info_farmacos"]]
 
 targets_proteinas_1g <- get_targets(drug_vector = farmacos_ids_fase4, proteinas_targets = proteinas_targets, drug_info = farmacos_info_fase4)
 targets_proteinas_2g <- get_targets(drug_vector = farmacos_ids_fase4, proteinas_targets = proteinas_targets_segundo_grado, drug_info = farmacos_info_fase4)
 
+# Todos los fármacos en fase 4. Tanto para proteinas de 1 y 2 grado
+
+#farmacos_fase4 <- get_all_drugs(fase_farmaco = 4)
+#farmacos_ids_fase4 <- farmacos_fase4[["vector_farmacos_ids"]]
+#farmacos_info_fase4 <- farmacos_fase4[["info_farmacos"]]
+
+#targets_proteinas_1g <- get_targets(drug_vector = farmacos_ids_fase4, proteinas_targets = proteinas_targets, drug_info = farmacos_info_fase4)
+#targets_proteinas_2g <- get_targets(drug_vector = farmacos_ids_fase4, proteinas_targets = proteinas_targets_segundo_grado, drug_info = farmacos_info_fase4)
+
 # Todos los fármacos en fase 3. Tanto para proteinas de 1 y 2 grado
 
-farmacos_fase3 <- get_all_drugs(fase_farmaco = 3)
-farmacos_ids_fase3 <- farmacos_fase3[["vector_farmacos_ids"]]
-farmacos_info_fase3 <- farmacos_fase3[["info_farmacos"]]
+#farmacos_fase3 <- get_all_drugs(fase_farmaco = 3)
+#farmacos_ids_fase3 <- farmacos_fase3[["vector_farmacos_ids"]]
+#farmacos_info_fase3 <- farmacos_fase3[["info_farmacos"]]
 
-targets_proteinas_1g_f3 <- get_targets(drug_vector = farmacos_ids_fase3, proteinas_targets = proteinas_targets, drug_info = farmacos_info_fase3)
-targets_proteinas_2g_f3 <- get_targets(drug_vector = farmacos_ids_fase3, proteinas_targets = proteinas_targets_segundo_grado, drug_info = farmacos_info_fase3)
+#targets_proteinas_1g_f3 <- get_targets(drug_vector = farmacos_ids_fase3, proteinas_targets = proteinas_targets, drug_info = farmacos_info_fase3)
+#targets_proteinas_2g_f3 <- get_targets(drug_vector = farmacos_ids_fase3, proteinas_targets = proteinas_targets_segundo_grado, drug_info = farmacos_info_fase3)
 
 
 
