@@ -262,8 +262,8 @@ farmacos_fase <- get_all_drugs(fase_farmaco = args[2])
 farmacos_ids_fase <- farmacos_fase[["vector_farmacos_ids"]]
 farmacos_info_fase <- farmacos_fase[["info_farmacos"]]
 
-targets_proteinas_1g <- get_targets(drug_vector = farmacos_ids_fase4, proteinas_targets = proteinas_targets, drug_info = farmacos_info_fase4)
-targets_proteinas_2g <- get_targets(drug_vector = farmacos_ids_fase4, proteinas_targets = proteinas_targets_segundo_grado, drug_info = farmacos_info_fase4)
+targets_proteinas_1g <- get_targets(drug_vector = farmacos_ids_fase, proteinas_targets = proteinas_targets, drug_info = farmacos_info_fase)
+targets_proteinas_2g <- get_targets(drug_vector = farmacos_ids_fase, proteinas_targets = proteinas_targets_segundo_grado, drug_info = farmacos_info_fase)
 
 # Todos los fármacos en fase 4. Tanto para proteinas de 1 y 2 grado
 
@@ -378,10 +378,10 @@ jpeg(file="action_protein_1g.jpeg")
 action_protein_1g <- view_Action_Type(targets_proteinas_1g$df_informacion_farmacos$action_type)
 jpeg(file="action_protein_2g.jpeg")
 action_protein_2g <- view_Action_Type(targets_proteinas_2g$df_informacion_farmacos$action_type)
-jpeg(file="action_protein_1g_f3.jpeg")
-action_protein_1g_f3 <- view_Action_Type(targets_proteinas_1g_f3$df_informacion_farmacos$action_type)
-jpeg(file="action_protein_2g_f3.jpeg")
-action_protein_2g_f3 <- view_Action_Type(targets_proteinas_2g_f3$df_informacion_farmacos$action_type)
+#jpeg(file="action_protein_1g_f3.jpeg")
+#action_protein_1g_f3 <- view_Action_Type(targets_proteinas_1g_f3$df_informacion_farmacos$action_type)
+#jpeg(file="action_protein_2g_f3.jpeg")
+#action_protein_2g_f3 <- view_Action_Type(targets_proteinas_2g_f3$df_informacion_farmacos$action_type)
 dev.off()
 
 #mechanismos de acción
@@ -389,10 +389,10 @@ jpeg(file="mechanism_protein_1g.jpeg")
 mechanism_protein_1g <- view_Action_Type(targets_proteinas_1g$df_informacion_farmacos$mechanism_of_action)
 jpeg(file="mechanism_protein_2g.jpeg")
 mechanism_protein_2g <- view_Action_Type(targets_proteinas_2g$df_informacion_farmacos$mechanism_of_action)
-jpeg(file="mechanism_protein_1g_f3.jpeg")
-mechanism_protein_1g_f3 <- view_Action_Type(targets_proteinas_1g_f3$df_informacion_farmacos$mechanism_of_action)
-jpeg(file="mechanism_protein_2g_f3.jpeg")
-mechanism_protein_2g_f3 <- view_Action_Type(targets_proteinas_2g_f3$df_informacion_farmacos$mechanism_of_action)
+#jpeg(file="mechanism_protein_1g_f3.jpeg")
+#mechanism_protein_1g_f3 <- view_Action_Type(targets_proteinas_1g_f3$df_informacion_farmacos$mechanism_of_action)
+#jpeg(file="mechanism_protein_2g_f3.jpeg")
+#mechanism_protein_2g_f3 <- view_Action_Type(targets_proteinas_2g_f3$df_informacion_farmacos$mechanism_of_action)
 dev.off()
 
 
