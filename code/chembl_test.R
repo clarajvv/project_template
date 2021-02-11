@@ -266,6 +266,29 @@ farmacos_info_fase <- farmacos_fase[["info_farmacos"]]
 targets_proteinas_1g <- get_targets(drug_vector = farmacos_ids_fase, proteinas_targets = proteinas_targets, drug_info = farmacos_info_fase)
 targets_proteinas_2g <- get_targets(drug_vector = farmacos_ids_fase, proteinas_targets = proteinas_targets_segundo_grado, drug_info = farmacos_info_fase)
 
+
+#save data 
+HOY  <- format(Sys.time(), "%F_%H.%M.%S")
+
+save_info <- function(type, day){
+   day <- format(Sys.time(), "%F_%H.%M.%S")
+   type <- targets_proteinas_2g$df_informacion_farmacos
+   if(dim(type)[1]>=2){
+         
+           info <- as.data.frame(type)
+           img = paste("info-farmacos", day, sep = "-")
+           dir <- file_name <- paste("../results",img, sep = "/")
+           file_name <- paste(dir, "csv", sep = ".")
+           write.csv(info,file_name, row.names = FALSE)
+           
+   }else{
+               print("No hay suficiente información")
+           }
+}
+
+save_info(targets_proteinas_1g$df_informacion_farmacos, HOY)
+save_info(targets_proteinas_2g$df_informacion_farmacos, HOY)
+
 # Todos los fÃ¡rmacos en fase 4. Tanto para proteinas de 1 y 2 grado
 
 #farmacos_fase4 <- get_all_drugs(fase_farmaco = 4)
@@ -296,77 +319,98 @@ targets_proteinas_2g <- get_targets(drug_vector = farmacos_ids_fase, proteinas_t
 ################### GRAFICAS #############################
 #################################################################
 
-view_Action_Type <- function(type_target){
-  num <- c()
-  names <- c()
-  for (i in 2:length(type_target)) {
-    
-    x <- type_target[[i]]
-    y <- length(type_target[type_target == type_target[[i]] & !is.na(type_target)])
-    names <- append(names, x)
-    num <- append(num, y)
-    
-  }
-  data <- data.frame(names,num)
-  grapic <- data[!duplicated(data$names), ]
-  plot(num~factor(names),grapic,las=2, xlab="", main ="Cantidad de tipos de activos")
-  return(grapic)
+view_Action_Type <- function(type_target, vari, day){
+   
+   num <- c()
+   names <- c()
+   if(length(type_target) >= 2){
+         for (i in 2:length(type_target)) {
+               
+                 x <- type_target[[i]]
+                 y <- length(type_target[type_target == type_target[[i]] & !is.na(type_target)])
+                 names <- append(names, x)
+                 num <- append(num, y)
+                 
+             }
+         data <- data.frame(names,num)
+         grapic <- data[!duplicated(data$names), ]
+         if(vari == 1){
+               img = paste("Action-Type-", day, sep = "-")
+         }else if(vari==2){
+                 img = paste("Mecanismo-Action-Type-", day, sep = "-")
+         }else{
+                 print("Tipo de gráfica no espesifícada")
+           }
+         dir <- file_name <- paste("../results",img, sep = "/")
+         file_name <- paste(dir, "jpeg", sep = ".")
+         jpeg(file_name)
+         plot(num~factor(names),grapic,las=2, xlab="", main ="Cantidad de tipos de activos")
+         dev.off()
+    }else if(length(type_target) == 1){
+           print("El medicamento no tiene proteínas interaccionando")
+       }
 }
 
 #para guardar las grÃ¡ficas realizadas
 #tipos de activadores
-jpeg(file="../results/action_protein_1g.jpeg")
-action_protein_1g <- view_Action_Type(targets_proteinas_1g$df_informacion_farmacos$action_type)
-jpeg(file="../results/action_protein_2g.jpeg")
-action_protein_2g <- view_Action_Type(targets_proteinas_2g$df_informacion_farmacos$action_type)
+#jpeg(file="../results/action_protein_1g.jpeg")
+action_protein_1g <- view_Action_Type(targets_proteinas_1g$df_informacion_farmacos$action_type, 1, HOY)
+#jpeg(file="../results/action_protein_2g.jpeg")
+action_protein_2g <- view_Action_Type(targets_proteinas_2g$df_informacion_farmacos$action_type, 1, HOY)
 #jpeg(file="action_protein_1g_f3.jpeg")
 #action_protein_1g_f3 <- view_Action_Type(targets_proteinas_1g_f3$df_informacion_farmacos$action_type)
 #jpeg(file="action_protein_2g_f3.jpeg")
 #action_protein_2g_f3 <- view_Action_Type(targets_proteinas_2g_f3$df_informacion_farmacos$action_type)
-dev.off()
+#dev.off()
 
 #mechanismos de acciÃ³n
-jpeg(file="../results/mechanism_protein_1g.jpeg")
-mechanism_protein_1g <- view_Action_Type(targets_proteinas_1g$df_informacion_farmacos$mechanism_of_action)
-jpeg(file="../results/mechanism_protein_2g.jpeg")
-mechanism_protein_2g <- view_Action_Type(targets_proteinas_2g$df_informacion_farmacos$mechanism_of_action)
+#jpeg(file="../results/mechanism_protein_1g.jpeg")
+mechanism_protein_1g <- view_Action_Type(targets_proteinas_1g$df_informacion_farmacos$mechanism_of_action, 2, HOY)
+#jpeg(file="../results/mechanism_protein_2g.jpeg")
+mechanism_protein_2g <- view_Action_Type(targets_proteinas_2g$df_informacion_farmacos$mechanism_of_action, 2, HOY)
 #jpeg(file="mechanism_protein_1g_f3.jpeg")
 #mechanism_protein_1g_f3 <- view_Action_Type(targets_proteinas_1g_f3$df_informacion_farmacos$mechanism_of_action)
 #jpeg(file="mechanism_protein_2g_f3.jpeg")
 #mechanism_protein_2g_f3 <- view_Action_Type(targets_proteinas_2g_f3$df_informacion_farmacos$mechanism_of_action)
-dev.off()
+#dev.off()
 
 
 
 #red de interacciÃ³n
 
-view_Interaction <- function(type, drug){
-  proteins <- c()
-  list_name <- c()
-  targets <- c()
-  for(i in 1:length(type)){
-    target <- attributes(type[i])
-    targets <- append(targets, target$names)
-  }
-  for(i in 1:length(targets)){
-    for(j in 1:length(type[[i]])){
-      prot <- type[[i]][j]
-      proteins <- append(proteins, prot)
-      name <- targets[i]
-      list_name <- append(list_name, name)
-    }
-  }
-  inter <- data.frame(list_name, proteins)
-  network <- simpleNetwork(inter) 
-  file_name <- paste(drug, "html", sep = ".")
-  print(file_name)
-  saveNetwork(network, file=file_name)
-  return(inter)
+view_Interaction <- function(type_1, type_2, day){
+   proteins <- c()
+   list_name <- c()
+   targets <- c()
+   type <- c(type_1, type_2)
+   
+   if(length(type) >= 2){
+       for(i in 1:length(type)){
+           target <- attributes(type[i])
+           targets <- append(targets, target$names)
+           }
+           for(i in 1:length(targets)){
+               for(j in 1:length(type[[i]])){
+                   prot <- type[[i]][j]
+                   proteins <- append(proteins, prot)
+                   name <- targets[i]
+                   list_name <- append(list_name, name)
+               }
+             }
+           inter <- data.frame(list_name, proteins)
+           bsk.network<-graph.data.frame(inter, directed=F)
+           img = img = paste("Red-medicamento-proteina", day, sep = "-")
+           dir <- file_name <- paste("../results",img, sep = "/")
+           file_name <- paste(dir, "jpeg", sep = ".")
+           print(file_name)
+           jpeg(file_name)
+           plot(bsk.network)
+       }else if(length(type) <= 1){
+           print("El medicamento no tiene proteínas interaccionando")
+         }
 }
 
-interact_graphic1<- view_Interaction(targets_proteinas_1g$lista_target_drug, "../results/targets_proteinas_1g")
-
-interact_graphic2<- view_Interaction(targets_proteinas_2g$lista_target_drug, "../results/targets_proteinas_2g")
+interact_graphic1<- view_Interaction(targets_proteinas_1g$lista_target_drug, targets_proteinas_2g$lista_target_drug, HOY)
 
 
 
