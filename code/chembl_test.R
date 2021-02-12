@@ -25,6 +25,7 @@ library(magrittr)
 library(ggplot2)
 
 # Meter nueva!!!!!!!!!!!!!!!!!!
+library(igraph)
 library(tidyverse)
 
 
@@ -460,40 +461,39 @@ if(dim(targets_proteinas$df_informacion_farmacos)[1] >=1){
 
 #red de interacci√≥n
 
-# CAMBIAR EL FORMATO DE LA RED (PONERLO BONITO) Y QUITAR QUE SEAN LOS DOS GRADOS DE LA PROTEÕNA(O PRIMER GRADO O SEGUNDO GRADO)
-view_Interaction <- function(type_1, type_2, day){
-   proteins <- c()
-   list_name <- c()
-   targets <- c()
-   type <- c(type_1, type_2)
-   
-   if(length(type) >= 2){
-       for(i in 1:length(type)){
-           target <- attributes(type[i])
-           targets <- append(targets, target$names)
-           }
-           for(i in 1:length(targets)){
-               for(j in 1:length(type[[i]])){
-                   prot <- type[[i]][j]
-                   proteins <- append(proteins, prot)
-                   name <- targets[i]
-                   list_name <- append(list_name, name)
-               }
-             }
-           inter <- data.frame(list_name, proteins)
-           bsk.network<-graph.data.frame(inter, directed=F)
-           img = img = paste("Red-medicamento-proteina", day, sep = "-")
-           dir <- file_name <- paste("../results",img, sep = "/")
-           file_name <- paste(dir, "jpeg", sep = ".")
-           print(file_name)
-           jpeg(file_name)
-           plot(bsk.network)
-       }else if(length(type) <= 1){
-           print("El medicamento no tiene proteÌnas interaccionando")
-         }
+view_Interaction <- function(type, day){
+  
+  proteins <- c()
+  list_name <- c()
+  targets <- c()
+  
+  if(length(type) >= 2){
+    for(i in 1:length(type)){
+      target <- attributes(type[i])
+      targets <- append(targets, target$names)
+    }
+    for(i in 1:length(targets)){
+      for(j in 1:length(type[[i]])){
+        prot <- type[[i]][j]
+        proteins <- append(proteins, prot)
+        name <- targets[i]
+        list_name <- append(list_name, name)
+      }
+    }
+    inter <- data.frame(list_name, proteins)
+    bsk.network<-graph.data.frame(inter, directed=T)
+    img = paste("Red-medicamento-proteina", day, sep = "-")
+    dir <- file_name <- paste("../results",img, sep = "/")
+    file_name <- paste(dir, "jpeg", sep = ".")
+    jpeg(file_name)
+    plot(bsk.network, vertex.label=NA, vertex.label.color="black", vertex.size=8,vertex.color="red"
+         ,edge.arrow.mode = E(bsk.network)$arrow,edge.arrow.size= 0.1)
+  }else if(length(type) <= 1){
+    print("El medicamento no tiene proteÌnas interaccionando")
+  }
 }
 
-#interact_graphic1<- view_Interaction(targets_proteinas_1g$lista_target_drug, targets_proteinas_2g$lista_target_drug, HOY)
+interact_graphic1<- view_Interaction(targets_proteinas$lista_target_drug, HOY)
 
 
 
