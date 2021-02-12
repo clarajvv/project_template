@@ -357,9 +357,7 @@ if (length(args)==0) {
     grado_proteinas <- 2
   }
 }
-faseFarmaco <- 4
-grado_proteinas <- 1
-proteinas_targets <- scan(file = "data/proteinas_chembl.txt", what = character())
+
 
 print(paste("Comienza la búsqueda de fármacos en la fase de ensayo ", faseFarmaco, sep = ""))
 farmacos_fase <- get_all_drugs(fase_farmaco = faseFarmaco)
