@@ -22,22 +22,10 @@ library(sjmisc)
 library(tidyverse)
 library(networkD3)
 library(magrittr)
+library(ggplot2)
 
-
-
-
-
-
-#################################################################
-################## CARGA PROTEINAS ##############################
-#################################################################
-
-proteinas_targets <- scan(file = "data/proteinas_chembl.txt", what = character())
-
-# Proteinas STRING con interaction score = 0.9 y max number of interactors to show  no more than 5 interactors
-proteinas_targets_segundo_grado <- scan(file = "data/proteinas_chembl_segundo_grado.txt", what = character())
-
-# Probar con interaction score o more than 5 interactors
+# Meter nueva!!!!!!!!!!!!!!!!!!
+library(tidyverse)
 
 
 
@@ -133,7 +121,7 @@ get_drugs_from_page <- function(farmacos_page){
 # Devuelve una lista donde el nombre corresponde al target y el contenido serÃ¡ un vector con los fÃ¡rmacos asociados
 # Devuelve un dataframe con las drogas seleccionadas y la informacion relacionada
 get_targets <- function(drug_vector, proteinas_targets, drug_info){
-  #Para devolver: lista y dataframe
+  #Para devolver: lista y dos dataframe
   lista_target_drug <- list()
   informacion_farmacos <- data.frame("id_farmaco" = NA,
                                      "id_target" = NA, 
@@ -141,6 +129,24 @@ get_targets <- function(drug_vector, proteinas_targets, drug_info){
                                      "canonical_smile" = NA, 
                                      "action_type" = NA,
                                      "mechanism_of_action" = NA)
+  informacion_quimica <- data.frame("alogp" = NA, 
+                                    "aromatic_rings" = NA,
+                                    "cx_logd" = NA, 
+                                    "cx_logp" = NA, 
+                                    "cx_most_apka" = NA, 
+                                    "cx_most_bpka" = NA, 
+                                    "hba" = NA, 
+                                    "hba_lipinski" = NA,
+                                    "hbd" = NA, 
+                                    "hbd_lipisnki" = NA, 
+                                    "heavy_atoms" = NA, 
+                                    "molecular_species" = NA, 
+                                    "mw_freebase" = NA, 
+                                    "mw_monoistopic" = NA, 
+                                    "psa" = NA, 
+                                    "qed_weight" = NA, 
+                                    "ro3_pass" = NA, 
+                                    "rtb" = NA)
   
   ###### Valores para mostrar como va la ejecucion
   
@@ -181,13 +187,16 @@ get_targets <- function(drug_vector, proteinas_targets, drug_info){
           # Comprobamos que el target corresponde a una de nuestras proteinas objetivo
           if(match(target, proteinas_targets, nomatch = 0) != 0){
             # Usamos get_drug_info para completar el dataframe
-            informacion_farmacos <- get_drug_info(tablaInfo = informacion_farmacos, 
+            tablas <- get_drug_info(tablaInfo = informacion_farmacos,
+                                                  tablaQuimica = informacion_quimica,
                                                   drugID = id_farmaco, 
                                                   drugPos = posDrug,
                                                   drugInfo = drug_info,
                                                   mechanism = mechanism, 
                                                   targetpos = t, 
                                                   targetID = target)
+            informacion_farmacos <- tablas$tablaInfo
+            informacion_quimica <- tablas$tablaQuimica
             
             #Comprobamos si ya tenemos una entrada con ese target para la lista
             if(!is.null(lista_target_drug[[target]])){
@@ -201,13 +210,14 @@ get_targets <- function(drug_vector, proteinas_targets, drug_info){
       }
     }
   }
-  na.omit(informacion_farmacos)
-  return(list("lista_target_drug" = lista_target_drug, "df_informacion_farmacos" = informacion_farmacos))
+  informacion_farmacos <- na.omit(informacion_farmacos)
+  informacion_quimica <- na.omit(informacion_quimica)
+  return(list("lista_target_drug" = lista_target_drug, "df_informacion_farmacos" = informacion_farmacos, "df_informacion_quimica" = informacion_quimica))
 }
 
 # Cargamos los datos que queremos de las drogas
 # AÃ±ade al dataframe la info de un fÃ¡rmaco. Esta informaciÃ³n puede venir de la consulta de todos los fÃ¡rmacos o de la consulta de los mecanismos
-get_drug_info <- function(tablaInfo, drugID, drugPos, drugInfo, mechanism, targetpos, targetID){
+get_drug_info <- function(tablaInfo, tablaQuimica, drugID, drugPos, drugInfo, mechanism, targetpos, targetID){
   
   ######## Info del listado de fÃ¡rmacos ###########
   pagina <- ceiling(drugPos/1000)
@@ -219,7 +229,60 @@ get_drug_info <- function(tablaInfo, drugID, drugPos, drugInfo, mechanism, targe
   # Canonical smile
   c_smile <- farmaco_info$molecule_structures[1]
   
-  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Mirar para aÃ±adir mÃ¡s !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  ####### Info quimica ##############################
+  # alogp
+  alogp <- farmaco_info$molecule_properties$alogp
+  
+  # aromatic rings
+  aro_rings <- farmaco_info$molecule_properties$aromatic_rings
+  
+  # cx_logd
+  cx_logd <- farmaco_info$molecule_properties$cx_logd
+  
+  # cx_logp
+  cx_logp <- farmaco_info$molecule_properties$cx_logp
+  
+  # cx_most_apka
+  cx_most_apka <- farmaco_info$molecule_properties$cx_most_apka
+  
+  # cx_most_bpka
+  cx_most_bpka <- farmaco_info$molecule_properties$cx_most_bpka
+  
+  # hba 
+  hba <- farmaco_info$molecule_properties$hba
+  
+  # hba_lipinski
+  hba_lipinski <- farmaco_info$molecule_properties$hba_lipinski
+  
+  # hbd
+  hbd <- farmaco_info$molecule_properties$hbd
+  
+  # hbd_lipinski
+  hbd_lipinski <- farmaco_info$molecule_properties$hbd_lipinski
+  
+  # heavy_atoms
+  heavy_atoms <- farmaco_info$molecule_properties$heavy_atoms
+  
+  # molecular_species
+  molecular_species <- farmaco_info$molecule_properties$molecular_species
+  
+  # mw_freebase
+  mw_freebase <- farmaco_info$molecule_properties$mw_freebase
+  
+  # mw_monoistopic
+  mw_monoistopic <- farmaco_info$molecule_properties$mw_monoistopic
+  
+  # psa
+  psa <- farmaco_info$molecule_properties$psa
+  
+  # qed_weight
+  qed_weight <- farmaco_info$molecule_properties$qed_weight
+  
+  # ro3_pass
+  ro3_pass <- farmaco_info$molecule_properties$ro3_pass
+  
+  # rtb
+  rtb <- farmaco_info$molecule_properties$rtb
   
   ######## Info del mecanismo ###########
   # Tipo de accion
@@ -227,7 +290,7 @@ get_drug_info <- function(tablaInfo, drugID, drugPos, drugInfo, mechanism, targe
   # Mecanismo de acciÃ³n
   mechanism_of_action <- mechanism$mechanisms[[targetpos]]$mechanism_of_action
   
-  #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Mirar para aÃ±adir mÃ¡s !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 
   
   tablaInfo <- rbind(tablaInfo, c("id_farmaco" = drugID,
                                   "id_target" = targetID, 
@@ -235,7 +298,28 @@ get_drug_info <- function(tablaInfo, drugID, drugPos, drugInfo, mechanism, targe
                                   "canonical_smile" = c_smile,
                                   "action_type" = action_type,
                                   "mechanism_of_action" = mechanism_of_action))
-  return(tablaInfo)
+  tablaQuimica <- rbind(tablaQuimica, c("id_farmaco" = drugID,
+                                        "id_target" = targetID, 
+                                        "alogp" = alogp, 
+                                        "aromatic_rings" = aro_rings,
+                                        "cx_logd" = cx_logd, 
+                                        "cx_logp" = cx_logp, 
+                                        "cx_most_apka" = cx_most_apka, 
+                                        "cx_most_bpka" = cx_most_bpka, 
+                                        "hba" = hba, 
+                                        "hba_lipinski" = hba_lipinski,
+                                        "hbd" = hbd, 
+                                        "hbd_lipisnki" = hbd_lipinski, 
+                                        "heavy_atoms" = heavy_atoms, 
+                                        "molecular_species" = molecular_species, 
+                                        "mw_freebase" = mw_freebase, 
+                                        "mw_monoistopic" = mw_monoistopic, 
+                                        "psa" = psa, 
+                                        "qed_weight" = qed_weight, 
+                                        "ro3_pass" = ro3_pass, 
+                                        "rtb" = rtb))
+  
+  return(list("tablaInfo" = tablaInfo, "tablaQuimica" = tablaQuimica))
   
 }
 
@@ -250,134 +334,135 @@ get_drug_info <- function(tablaInfo, drugID, drugPos, drugInfo, mechanism, targe
 args = commandArgs(trailingOnly=TRUE)
 
 if (length(args)==0) {
-  stop("Debe indicar la fase del fÃ¡rmaco", call.=FALSE)
+  stop("Debe indicar la fase del fármaco", call.=FALSE)
 } else if (length(args)==1) {
-  if (args == 3) {
-    args[2] = "3"
-  } else if (args == 4) {
-    args[2] = "4"
+  if(args == 1) {
+    faseFarmaco = "3"
+    proteinas_targets <- scan(file = "data/proteinas_chembl.txt", what = character())
+    grado_proteinas <- 1
+  }
+  else if(args == 2) {
+    faseFarmaco = "3"
+    proteinas_targets <- scan(file = "data/proteinas_chembl_secundarias.txt", what = character())
+    grado_proteinas <- 2
+  }
+  else if (args == 3) {
+    faseFarmaco = "4"
+    proteinas_targets <- scan(file = "data/proteinas_chembl.txt", what = character())
+    grado_proteinas <- 1
+  } 
+  else if (args == 4) {
+    faseFarmaco = "4"
+    proteinas_targets <- scan(file = "data/proteinas_chembl_secundarias.txt", what = character())
+    grado_proteinas <- 2
+  }
+}
+faseFarmaco <- 4
+grado_proteinas <- 1
+proteinas_targets <- scan(file = "data/proteinas_chembl.txt", what = character())
+
+print(paste("Comienza la búsqueda de fármacos en la fase de ensayo ", faseFarmaco, sep = ""))
+farmacos_fase <- get_all_drugs(fase_farmaco = faseFarmaco)
+farmacos_ids_fase <- farmacos_fase[["vector_farmacos_ids"]]
+farmacos_info_fase <- farmacos_fase[["info_farmacos"]]
+print(paste("Fin de la búsqueda de fármacos en la fase de ensayo ", faseFarmaco, sep = ""))
+
+print("Comienza el filtrado de fármacos para las proteínas seleccionadas")
+targets_proteinas <- get_targets(drug_vector = farmacos_ids_fase, proteinas_targets = proteinas_targets, drug_info = farmacos_info_fase)
+print("Fin del filtrado de fármacos para las proteínas seleccionadas")
+
+
+
+
+#################################################################
+#################### GUARDAR DATOS ##############################
+#################################################################
+
+# Creamos una carpeta nueva en resultados con el día y hora de la ejecución
+HOY  <- format(Sys.time(), "%F_%H.%M.%S")
+nombre_carpeta <- paste(HOY, "_fase", faseFarmaco, "_grado", grado_proteinas, sep = "" )
+directorio_carpeta_resultados <- paste("../results", nombre_carpeta, sep = "/")
+dir.create(directorio_carpeta_resultados)
+
+
+save_info <- function(datos, titulo, directorio){
+  if(dim(datos)[1] >= 1){
+    file_name_dir <- paste(directorio, "/", titulo, ".csv", sep = "")
+    write.csv(datos, file_name_dir, row.names = FALSE)
+  }
+  else{
+     print(paste("No hay información para guardar en: ", titulo, sep = ""))
   }
 }
 
-farmacos_fase <- get_all_drugs(fase_farmaco = args[2])
-farmacos_ids_fase <- farmacos_fase[["vector_farmacos_ids"]]
-farmacos_info_fase <- farmacos_fase[["info_farmacos"]]
-
-targets_proteinas_1g <- get_targets(drug_vector = farmacos_ids_fase, proteinas_targets = proteinas_targets, drug_info = farmacos_info_fase)
-targets_proteinas_2g <- get_targets(drug_vector = farmacos_ids_fase, proteinas_targets = proteinas_targets_segundo_grado, drug_info = farmacos_info_fase)
+save_info(targets_proteinas$df_informacion_farmacos, "informacionGeneralFarmacos", directorio_carpeta_resultados)
+save_info(targets_proteinas$df_informacion_quimica, "informacionQuimicaFarmacos", directorio_carpeta_resultados)
 
 
-#save data 
-HOY  <- format(Sys.time(), "%F_%H.%M.%S")
 
-save_info <- function(type, day){
-   day <- format(Sys.time(), "%F_%H.%M.%S")
-   type <- targets_proteinas_2g$df_informacion_farmacos
-   if(dim(type)[1]>=2){
-         
-           info <- as.data.frame(type)
-           img = paste("info-farmacos", day, sep = "-")
-           dir <- file_name <- paste("../results",img, sep = "/")
-           file_name <- paste(dir, "csv", sep = ".")
-           write.csv(info,file_name, row.names = FALSE)
-           
-   }else{
-               print("No hay suficiente información")
-           }
+#################################################################
+####################### GRAFICAS ################################
+#################################################################
+
+if(dim(targets_proteinas$df_informacion_farmacos)[1] >=1){
+  # Si hay datos, se hacen las gráficas
+  
+  ##################################### Gráfica actionType ############################
+  
+  dfActionType <- data.frame("actionType" = targets_proteinas$df_informacion_farmacos$action_type)
+  dfActionType <- as.data.frame(dfActionType %>% group_by(actionType) %>% tally())
+  
+  file_name_actionType <- paste(directorio_carpeta_resultados, "/graficaTipoDeAccion.png", sep = "")
+  png(file_name_actionType, width = 1050, height = 1200) 
+  
+  g <- ggplot(data = dfActionType, aes(x = actionType, y = n, fill = actionType)) + geom_bar(stat="identity", width = 0.6) +
+    theme_minimal()+ geom_text(aes(label = n), vjust=1.6, color="white", size=3) +
+    theme (text = element_text(size=30)) + ggtitle ("Frecuencia del tipo de acción")  + 
+    theme(plot.title = element_text(size=rel(2),
+                                    vjust=3)) +
+    scale_fill_brewer(palette="Paired") +
+    labs(x = "Tipo de acción", y = "Frecuencia de aparición") + 
+    theme(axis.text.x = element_text(angle = 50, hjust = 1)) +
+    theme(axis.title.x = element_text(vjust=-0.5, size=rel(1.5))) +
+    theme(axis.title.y = element_text(vjust=1.5, size=rel(1.5))) 
+  
+  print(g)
+  
+  dev.off()
+  
+  ##################################### Gráfica  mechanism of action ############################
+  
+  dfMechanism <- data.frame("Mechanism_of_action" = targets_proteinas$df_informacion_farmacos$mechanism_of_action)
+  dfMechanism <- as.data.frame(dfMechanism %>% group_by(Mechanism_of_action) %>% tally())
+  
+  file_name_mechanism <- paste(directorio_carpeta_resultados, "/graficaMecanismoDeAccion.png", sep = "")
+  png(file_name_mechanism, width = 1250, height = 1250) 
+  
+  g2 <- ggplot(data = dfMechanism, aes(x = Mechanism_of_action, y = n, fill = Mechanism_of_action)) + geom_bar(stat="identity", width = 0.6) +
+    theme_minimal() +
+    theme (text = element_text(size=20)) + ggtitle ("Frecuencia del mecanismo de acción")  + 
+    theme(plot.title = element_text(size=rel(2),
+                                    vjust=3)) +
+    labs(x = "Mecanismo de acción", y = "Frecuencia") + 
+    scale_colour_gradient2() +
+    theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+    theme(axis.title.x = element_text(vjust=1.5, size=rel(1.5))) +
+    theme(axis.title.y = element_text(vjust=1.5, size=rel(1.5))) 
+  
+  print(g2)
+  
+  dev.off()
+  
+}else{
+  print("El númrero de fármacos obtenido es insuficiente para crear gráficas")
 }
 
-save_info(targets_proteinas_1g$df_informacion_farmacos, HOY)
-save_info(targets_proteinas_2g$df_informacion_farmacos, HOY)
-
-# Todos los fÃ¡rmacos en fase 4. Tanto para proteinas de 1 y 2 grado
-
-#farmacos_fase4 <- get_all_drugs(fase_farmaco = 4)
-#farmacos_ids_fase4 <- farmacos_fase4[["vector_farmacos_ids"]]
-#farmacos_info_fase4 <- farmacos_fase4[["info_farmacos"]]
-
-#targets_proteinas_1g <- get_targets(drug_vector = farmacos_ids_fase4, proteinas_targets = proteinas_targets, drug_info = farmacos_info_fase4)
-#targets_proteinas_2g <- get_targets(drug_vector = farmacos_ids_fase4, proteinas_targets = proteinas_targets_segundo_grado, drug_info = farmacos_info_fase4)
-
-# Todos los fÃ¡rmacos en fase 3. Tanto para proteinas de 1 y 2 grado
-
-#farmacos_fase3 <- get_all_drugs(fase_farmaco = 3)
-#farmacos_ids_fase3 <- farmacos_fase3[["vector_farmacos_ids"]]
-#farmacos_info_fase3 <- farmacos_fase3[["info_farmacos"]]
-
-#targets_proteinas_1g_f3 <- get_targets(drug_vector = farmacos_ids_fase3, proteinas_targets = proteinas_targets, drug_info = farmacos_info_fase3)
-#targets_proteinas_2g_f3 <- get_targets(drug_vector = farmacos_ids_fase3, proteinas_targets = proteinas_targets_segundo_grado, drug_info = farmacos_info_fase3)
-
-
-
-
-#################################################################
-################### Pruebas(borrar) #############################
-#################################################################
-
-
-#################################################################
-################### GRAFICAS #############################
-#################################################################
-
-view_Action_Type <- function(type_target, vari, day){
-   
-   num <- c()
-   names <- c()
-   if(length(type_target) >= 2){
-         for (i in 2:length(type_target)) {
-               
-                 x <- type_target[[i]]
-                 y <- length(type_target[type_target == type_target[[i]] & !is.na(type_target)])
-                 names <- append(names, x)
-                 num <- append(num, y)
-                 
-             }
-         data <- data.frame(names,num)
-         grapic <- data[!duplicated(data$names), ]
-         if(vari == 1){
-               img = paste("Action-Type-", day, sep = "-")
-         }else if(vari==2){
-                 img = paste("Mecanismo-Action-Type-", day, sep = "-")
-         }else{
-                 print("Tipo de gráfica no espesifícada")
-           }
-         dir <- file_name <- paste("../results",img, sep = "/")
-         file_name <- paste(dir, "jpeg", sep = ".")
-         jpeg(file_name)
-         plot(num~factor(names),grapic,las=2, xlab="", main ="Cantidad de tipos de activos")
-         dev.off()
-    }else if(length(type_target) == 1){
-           print("El medicamento no tiene proteínas interaccionando")
-       }
-}
-
-#para guardar las grÃ¡ficas realizadas
-#tipos de activadores
-#jpeg(file="../results/action_protein_1g.jpeg")
-action_protein_1g <- view_Action_Type(targets_proteinas_1g$df_informacion_farmacos$action_type, 1, HOY)
-#jpeg(file="../results/action_protein_2g.jpeg")
-action_protein_2g <- view_Action_Type(targets_proteinas_2g$df_informacion_farmacos$action_type, 1, HOY)
-#jpeg(file="action_protein_1g_f3.jpeg")
-#action_protein_1g_f3 <- view_Action_Type(targets_proteinas_1g_f3$df_informacion_farmacos$action_type)
-#jpeg(file="action_protein_2g_f3.jpeg")
-#action_protein_2g_f3 <- view_Action_Type(targets_proteinas_2g_f3$df_informacion_farmacos$action_type)
-#dev.off()
-
-#mechanismos de acciÃ³n
-#jpeg(file="../results/mechanism_protein_1g.jpeg")
-mechanism_protein_1g <- view_Action_Type(targets_proteinas_1g$df_informacion_farmacos$mechanism_of_action, 2, HOY)
-#jpeg(file="../results/mechanism_protein_2g.jpeg")
-mechanism_protein_2g <- view_Action_Type(targets_proteinas_2g$df_informacion_farmacos$mechanism_of_action, 2, HOY)
-#jpeg(file="mechanism_protein_1g_f3.jpeg")
-#mechanism_protein_1g_f3 <- view_Action_Type(targets_proteinas_1g_f3$df_informacion_farmacos$mechanism_of_action)
-#jpeg(file="mechanism_protein_2g_f3.jpeg")
-#mechanism_protein_2g_f3 <- view_Action_Type(targets_proteinas_2g_f3$df_informacion_farmacos$mechanism_of_action)
-#dev.off()
 
 
 
 #red de interacciÃ³n
 
+# CAMBIAR EL FORMATO DE LA RED (PONERLO BONITO) Y QUITAR QUE SEAN LOS DOS GRADOS DE LA PROTEÍNA(O PRIMER GRADO O SEGUNDO GRADO)
 view_Interaction <- function(type_1, type_2, day){
    proteins <- c()
    list_name <- c()
@@ -410,7 +495,7 @@ view_Interaction <- function(type_1, type_2, day){
          }
 }
 
-interact_graphic1<- view_Interaction(targets_proteinas_1g$lista_target_drug, targets_proteinas_2g$lista_target_drug, HOY)
+#interact_graphic1<- view_Interaction(targets_proteinas_1g$lista_target_drug, targets_proteinas_2g$lista_target_drug, HOY)
 
 
 
