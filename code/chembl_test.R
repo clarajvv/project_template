@@ -358,9 +358,9 @@ if (length(args)==0) {
     grado_proteinas <- 2
   }
 }
-faseFarmaco <-  "4"
-proteinas_targets <- scan(file = "data/proteinas_chembl.txt", what = character())
-grado_proteinas <- 1
+#faseFarmaco <-  "4"
+#proteinas_targets <- scan(file = "data/proteinas_chembl.txt", what = character())
+#grado_proteinas <- 1
 
 
 
