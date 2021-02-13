@@ -467,7 +467,7 @@ if(dim(targets_proteinas$df_informacion_farmacos)[1] >=1){
 
 #red de interacciÃ³n
 
-view_Interaction <- function(type, day){
+view_Interaction <- function(type, directorio, day){
   
   proteins <- c()
   list_name <- c()
@@ -489,17 +489,18 @@ view_Interaction <- function(type, day){
     inter <- data.frame(list_name, proteins)
     bsk.network<-graph.data.frame(inter, directed=T)
     img = paste("Red-medicamento-proteina", day, sep = "-")
-    dir <- file_name <- paste("../results",img, sep = "/")
+    dir <- file_name <- paste(directorio,img, sep = "/")
     file_name <- paste(dir, "jpeg", sep = ".")
     jpeg(file_name)
     plot(bsk.network, vertex.label=NA, vertex.label.color="black", vertex.size=8,vertex.color="red"
          ,edge.arrow.mode = E(bsk.network)$arrow,edge.arrow.size= 0.1)
+    dev.off()
   }else if(length(type) <= 1){
     print("El medicamento no tiene proteínas interaccionando")
   }
 }
 
-interact_graphic1<- view_Interaction(targets_proteinas$lista_target_drug, HOY)
+interact_graphic1<- view_Interaction(targets_proteinas$lista_target_drug, directorio_carpeta_resultados ,HOY)
 
 
 
