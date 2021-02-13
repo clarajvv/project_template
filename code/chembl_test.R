@@ -358,6 +358,10 @@ if (length(args)==0) {
     grado_proteinas <- 2
   }
 }
+faseFarmaco <-  "4"
+proteinas_targets <- scan(file = "data/proteinas_chembl.txt", what = character())
+grado_proteinas <- 1
+
 
 
 print(paste("Comienza la búsqueda de fármacos en la fase de ensayo ", faseFarmaco, sep = ""))
@@ -412,20 +416,23 @@ if(dim(targets_proteinas$df_informacion_farmacos)[1] >=1){
   dfActionType <- as.data.frame(dfActionType %>% group_by(actionType) %>% tally())
   
   file_name_actionType <- paste(directorio_carpeta_resultados, "/graficaTipoDeAccion.png", sep = "")
-  png(file_name_actionType, width = 1050, height = 1200) 
+  #png(file_name_actionType, width = 1050, height = 1200) 
   
   g <- ggplot(data = dfActionType, aes(x = actionType, y = n, fill = actionType)) + geom_bar(stat="identity", width = 0.6) +
     theme_minimal()+ geom_text(aes(label = n), vjust=1.6, color="white", size=3) +
-    theme (text = element_text(size=30)) + ggtitle ("Frecuencia del tipo de acción")  + 
-    theme(plot.title = element_text(size=rel(2),
-                                    vjust=3)) +
+    theme (text = element_text(family = "ArialMT", size=14)) + ggtitle ("Frecuencia del tipo de acción")  + 
+    theme(plot.title = element_text(size=rel(1),
+                                    vjust=1)) +
     scale_fill_brewer(palette="Paired") +
     labs(x = "Tipo de acción", y = "Frecuencia de aparición") + 
     theme(axis.text.x = element_text(angle = 50, hjust = 1)) +
     theme(axis.title.x = element_text(vjust=-0.5, size=rel(1.5))) +
     theme(axis.title.y = element_text(vjust=1.5, size=rel(1.5))) 
+  par(mar = c(1,1,5,1))
+  g
   
-  print(g)
+  ggsave(filename = file_name_actionType, limitsize = FALSE)
+  
   
   dev.off()
   
@@ -435,13 +442,13 @@ if(dim(targets_proteinas$df_informacion_farmacos)[1] >=1){
   dfMechanism <- as.data.frame(dfMechanism %>% group_by(Mechanism_of_action) %>% tally())
   
   file_name_mechanism <- paste(directorio_carpeta_resultados, "/graficaMecanismoDeAccion.png", sep = "")
-  png(file_name_mechanism, width = 1250, height = 1250) 
+  png(file_name_mechanism, height = 1200, width = 1000) 
   
   g2 <- ggplot(data = dfMechanism, aes(x = Mechanism_of_action, y = n, fill = Mechanism_of_action)) + geom_bar(stat="identity", width = 0.6) +
     theme_minimal() +
-    theme (text = element_text(size=20)) + ggtitle ("Frecuencia del mecanismo de acción")  + 
-    theme(plot.title = element_text(size=rel(2),
-                                    vjust=3)) +
+    theme (text = element_text(family = "ArialMT", size=14)) + ggtitle ("Frecuencia del mecanismo de acción")  + 
+    theme(plot.title = element_text(size=rel(1),
+                                    vjust=1)) +
     labs(x = "Mecanismo de acción", y = "Frecuencia") + 
     scale_colour_gradient2() +
     theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
@@ -449,7 +456,6 @@ if(dim(targets_proteinas$df_informacion_farmacos)[1] >=1){
     theme(axis.title.y = element_text(vjust=1.5, size=rel(1.5))) 
   
   print(g2)
-  
   dev.off()
   
 }else{
