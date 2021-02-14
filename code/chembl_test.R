@@ -24,7 +24,6 @@ library(networkD3)
 library(magrittr)
 library(ggplot2)
 
-# Meter nueva!!!!!!!!!!!!!!!!!!
 library(igraph)
 library(tidyverse)
 
@@ -327,7 +326,6 @@ get_drug_info <- function(tablaInfo, tablaQuimica, drugID, drugPos, drugInfo, me
 
 
 
-
 #################################################################
 ################### EJECUCION ###################################
 #################################################################
@@ -358,9 +356,6 @@ if (length(args)==0) {
     grado_proteinas <- 2
   }
 }
-#faseFarmaco <-  "4"
-#proteinas_targets <- scan(file = "data/proteinas_chembl.txt", what = character())
-#grado_proteinas <- 1
 
 
 
@@ -465,6 +460,7 @@ if(dim(targets_proteinas$df_informacion_farmacos)[1] >=1){
 
 
 
+
 #red de interacción
 
 view_Interaction <- function(type, directorio, day){
@@ -501,9 +497,6 @@ view_Interaction <- function(type, directorio, day){
 }
 
 interact_graphic1<- view_Interaction(targets_proteinas$lista_target_drug, directorio_carpeta_resultados ,HOY)
-
-
-
 
 
 
