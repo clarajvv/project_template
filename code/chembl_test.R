@@ -342,7 +342,7 @@ if (length(args)==0) {
   }
   else if(args == 2) {
     faseFarmaco = "3"
-    proteinas_targets <- scan(file = "data/proteinas_chembl_secundarias.txt", what = character())
+    proteinas_targets <- scan(file = "data/proteinas_chembl_segundo_grado.txt", what = character())
     grado_proteinas <- 2
   }
   else if (args == 3) {
@@ -352,7 +352,7 @@ if (length(args)==0) {
   } 
   else if (args == 4) {
     faseFarmaco = "4"
-    proteinas_targets <- scan(file = "data/proteinas_chembl_secundarias.txt", what = character())
+    proteinas_targets <- scan(file = "data/proteinas_chembl_segundo_grado.txt", what = character())
     grado_proteinas <- 2
   }
 }
