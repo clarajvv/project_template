@@ -10,7 +10,8 @@
 \usepackage{amsthm,amsmath}
 \usepackage{graphicx}
 %\RequirePackage[numbers]{natbib}
-%\RequirePackage{hyperref}
+\RequirePackage{hyperref}
+\usepackage{float}
 \usepackage[utf8]{inputenc} %unicode support
 %\usepackage[applemac]{inputenc} %applemac support if unicode package fails
 %\usepackage[latin1]{inputenc} %UNIX support if unicode package fails
@@ -33,7 +34,7 @@
 			%% INTRODUCIR TITULO PROYECTO               %%
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			
-			\title{A sample article title}
+			\title{Reposicionamiento de fármacos en COVID-19}
 			
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			%% AUTORES. METER UNA ENTRADA AUTHOR        %%
@@ -41,14 +42,22 @@
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			
 			\author[
-			  addressref={aff1},                   % ESTA LINEA SE COPIA IGUAL PARA CADA AUTOR
-			  corref={aff1},                       % ESTA LINEA SOLO DEBE TENERLA EL COORDINADOR DEL GRUPO
-			  email={jane.e.doe@cambridge.co.uk}   % VUESTRO CORREO ACTIVO
-			]{\inits{J.E.}\fnm{Jane E.} \snm{Doe}} % inits: INICIALES DE AUTOR, fnm: NOMBRE DE AUTOR, snm: APELLIDOS DE AUTOR
+			  addressref={aff1},                  
+			  email={iresanjim@uma.es}
+			]{\inits{I.S.J.}\fnm{Irene} \snm{Sánchez Jiménez }}
 			\author[
 			  addressref={aff1},
-			  email={john.RS.Smith@cambridge.co.uk}
-			]{\inits{J.R.S.}\fnm{John R.S.} \snm{Smith}}
+			  corref={aff1},
+			  email={clarajimenez@uma.es}
+			]{\inits{C.J.V}\fnm{Clara} \snm{Jiménez Valverde}}
+			\author[
+			  addressref={aff1},
+			  email={patriciatr99@uma.es}
+			]{\inits{P.T.R}\fnm{Patricia} \snm{Trujillo Rodríguez}}
+			\author[
+			  addressref={aff1},
+			  email={\texttt{luci\_vm@uma.es}}
+			]{\inits{L.V.M}\fnm{Lucía} \snm{Valverde Martínez}}
 			
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			%% AFILIACION. NO TOCAR                     %%
@@ -66,11 +75,12 @@
 		\begin{abstractbox}
 		
 			\begin{abstract} % abstract
-			
+			En esta investigación, se busca encontrar fármacos ya existentes que puedan combatir la acción del virus SARS\_Cov-2. Debido a la alta tasa de contagio que tiene, nos urge encontrar tratamientos eficaces en poco tiempo. Aunque se han probado medicamentos útiles en casos de virus similares, para encontrar un tratamiento adecuado contra el SARS\_Cov-2 es esencial cambiar la aproximación reduccionista por una más centrada en el sistema. 
+			Por ello, en este trabajo se propone usar las proteínas humanas descubiertas del interactoma funcional SARS-humano, junto a otras relacionadas, para encontrar fármacos ya existentes que afecten la acción del virus. Usando las bases de datos STRING y ChEMBL, obtenemos en el experimento fármacos potenciales, así como información sobre ellos, que se podrá usar en estudios posteriores.
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			%% RESUMEN BREVE DE NO MAS DE 100 PALABRAS   %%
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
-			
+
 			\end{abstract}
 			
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -78,9 +88,10 @@
 			%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 			
 			\begin{keyword}
-			\kwd{sample}
-			\kwd{article}
-			\kwd{author}
+			\kwd{COVID-19}
+			\kwd{fármacos}
+			\kwd{proteínas}
+			\kwd{interactoma}
 			\end{keyword}
 		
 		
@@ -88,109 +99,7 @@
 	
 	\end{frontmatter}
 	
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%% EJEMPLO DE LATEX %%                                                                %%
-	%% BORRAR ANTES DE ENTREGAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!              %%
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	
-	\section*{Content}
-		Text and results for this section, as per the individual journal's instructions for authors. Here, we reference the figure \ref{fig:cost_genome} and figure \ref{fig:cost_megabase} but also the table \ref{tab:ejemplo}.
-	
-	\section*{Section title}
-		Text for this section\ldots
 
-		In this section we examine the growth rate of the mean of $Z_0$, $Z_1$ and $Z_2$. In
-		addition, we examine a common modeling assumption and note the
-		importance of considering the tails of the extinction time $T_x$ in
-		studies of escape dynamics.
-		We will first consider the expected resistant population at $vT_x$ for
-		some $v>0$, (and temporarily assume $\alpha=0$)
-		%
-		\[
-		E \bigl[Z_1(vT_x) \bigr]=
-		\int_0^{v\wedge
-			1}Z_0(uT_x)
-		\exp (\lambda_1)\,du .
-		\]
-		%
-		If we assume that sensitive cells follow a deterministic decay
-		$Z_0(t)=xe^{\lambda_0 t}$ and approximate their extinction time as
-		$T_x\approx-\frac{1}{\lambda_0}\log x$, then we can heuristically
-		estimate the expected value as
-		%
-		\begin{equation}\label{eqexpmuts}
-			\begin{aligned}[b]
-				&      E\bigl[Z_1(vT_x)\bigr]\\
-				&\quad      = \frac{\mu}{r}\log x
-				\int_0^{v\wedge1}x^{1-u}x^{({\lambda_1}/{r})(v-u)}\,du .
-			\end{aligned}
-		\end{equation}
-		%
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		%% USAR \cite{...} PARA INCLUIR REFERENCIAS BIBLIOGRAFICAS          %%
-		%%  \cite{koon}  Para una sola                                      %%
-		%%  \cite{oreg,khar,zvai,xjon,schn,pond} Para una lista             %%
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		Thus we observe that this expected value is finite for all $v>0$ (also see \cite{koon,xjon,marg,schn,koha,issnic}).
-		
-		
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		%% FIGURAS                                                                               %%
-		%% includegraphics: inserta la imagen                                                    %%
-		%% caption: descripcion de la figura                                                     %%
-		%% label: etiqueta para hacer referencia a la figura en el texto con la instrucción ref  %%
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
-		
-		\begin{figure}[h!]
-			\includegraphics[width=0.9\textwidth]{figures/Sequencing_Cost_per_Genome_May2020.jpg}
-			\caption{Sample figure title}
-			\label{fig:cost_genome}
-		\end{figure}
-		
-		\begin{figure}[h!]
-			\includegraphics[width=0.9\textwidth]{figures/Sequencing_Cost_per_Megabase_May2020.jpg}
-			\caption{Sample figure title}
-			\label{fig:cost_megabase}
-		\end{figure}
-		
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		%% TABLAS                                                                               %%
-		%% caption: Descripción tabla                                                           %%
-		%% \begin{tabular}{letras}: Indica numero de columnas.                                  %%
-		%%    Una letra por columna, la letra indica la alineación de la columna:               %%
-		%%    c center, l left, r right                                                         %%
-		%% hline: Representa una linea como entre filas                                         %%
-		%% \\: fin de fila                                                                      %%
-		%% &: delimitador de celda                                                              %%
-		%% label: etiqueta para hacer referencia a la tabla en el texto con la instrucción ref  %%
-		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-		
-		\begin{table}[h!]
-			\caption{Sample table title. This is where the description of the table should go}
-			\begin{tabular}{cccc}
-				\hline
-				& B1  &B2   & B3\\ 
-				\hline
-				A1 & 0.1 & 0.2 & 0.3\\
-				A2 & ... & ..  & .\\
-				A3 & ..  & .   & .\\ 
-				\hline
-				\label{tab:ejemplo}
-			\end{tabular}
-		\end{table}
-				
-		\subsection*{Sub-heading for section}
-			Text for this sub-heading\ldots
-	
-			\subsubsection*{Sub-sub heading for section}
-				Text for this sub-sub-heading\ldots
-					
-					\paragraph*{Sub-sub-sub heading for section}
-						Text for this sub-sub-sub-heading\ldots
-	
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	%% FIN DE EJEMPLO !!!!!!!!!!!! %%
-	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%% COMIENZO DEL DOCUMENTO REAL %%
@@ -201,7 +110,7 @@
 	\input{tex_files/resultados.tex}
 	\input{tex_files/discusion.tex}
 	\input{tex_files/conclusiones.tex}
-	
+	\input{tex_files/anexo.tex}
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	%% OTRA INFORMACIÓN                         %%
@@ -209,17 +118,18 @@
 	
 	\begin{backmatter}
 	
-		\section*{Abreviaciones}%% if any
-			Indicar lista de abreviaciones mostrando cada acrónimo a que corresponde
-		
-		\section*{Disponibilidad de datos y materiales}%% if any
-			Debéis indicar aquí un enlace a vuestro repositorio de github.
+		\section*{Disponibilidad de datos y materiales}
+			El respositorio de Github usado es: \url{https://github.com/clarajvv/repo\_farm\_COVID}
 		
 		\section*{Contribución de los autores}
-			Usando las iniciales que habéis definido al comienzo del documento, debeis indicar la contribución al proyecto en el estilo:
-			J.E : Encargado del análisis de coexpresión con R, escritura de resultados; J.R.S : modelado de red con python y automatizado del código, escritura de métodos; ...
-			OJO: que sea realista con los registros que hay en vuestros repositorios de github. 
-		
+    		L.V.M : Búsqueda de las proteínas del interactoma SARS-Humano, búsqueda de proteínas secundarias en STRING, mapeo de IDCHEMBL, búsqueda inicial de métodos para la extracción de datos de CHEMBL, desarrollo de funciones en R para obtener las relaciones entre proteínas y fármacos y los datos de estos en CHEMBL, creación de gráficas de tipos de acción y mecanismos de acción y guardado de las mismas, escritura anexo, escritura de metodología.
+    		
+    		C.J.V : Búsqueda inicial de métodos para la extracción de datos de CHEMBL, desarrollo de código en Python para extracción de información desde CHEMBL (fallido), desarrollo en R de pruebas de extracción de relaciones entre proteínas y fármacos y los datos de estos desde CHEMBL, búsqueda de métodos de traducción de IDs de proteínas, ayuda en prueba y error de archivos bash, inclusión de la bibliografía en el informe, comunicación con los profesores, labores de coordinación, maquetación y comentado de las gráficas en el informe,  correcciones finales del informe, escritura de metodología.
+    		
+    		I.S.J : Documentación sobre el problema \cite{Gysi2020}, búsqueda de métodos de extracción de información de STRING y GO desde R, documentación sobre uso de bash, creación, correcciones y actualizaciones de archivo bash para la instalación de paquetes, creación, correcciones y actualizaciones de archivo de bash para la ejecución del código R, escritura de metodología.
+    		
+    		P.T.R : Búsqueda de métodos de extracción de información de STRING y GO desde R, recopilación de la bibliografía y creación del archivo para mostrarla, creación de gráficas de interacción y guardado de las mismas, escritura de discusiones y anexo.
+    		
 		
 		%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 		%% BIBLIOGRAFIA: no teneis que tocar nada, solo sustituir el archivo bibliography.bib %%

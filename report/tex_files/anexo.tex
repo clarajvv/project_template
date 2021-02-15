@@ -1,2 +1,44 @@
 \section{Anexos}
 
+En el siguiente anexo vamos a explicar el significado de cada variable guardada en los archivos csv resultates de la ejecución de nuestro flujo de bash.
+
+\subsubsection{Archivo con información general}
+
+A continuación, se muestran las variables guardadas y su significado:
+
+\begin{itemize}
+\item idFarmaco: es el identificador de ChEMBL que tiene el fármaco.
+\item idTarget: es el identificador de ChEMBL que tiene la proteína diana del fármaco. 
+\item fechaAprovación: fecha en la que el fármaco fue aprobado.
+\item canonicalSmile: (Simplified Molecular Input Line Specification o SMILES) es una especificación para describir sin ambigüedades la estructura de una molécula usando cadenas ASCII cortas. 
+\item actiónType: indica que tipo acción realiza el fármaco.
+\item mechanismOfAction: atributo la forma en la que actúa el fármaco.
+\end{itemize}
+
+\subsubsection{Archivo con información química}
+
+A continuación, se muestran las variables guardadas y su significado:
+
+\begin{itemize}
+\item AlogP: valor calculado de la lipofilicidad de una molécula expresado como log (coeficiente de partición octtanol / agua).
+\item Aromatics\_rings: número de anillos aromáticos.
+\item cx\_logd: se define como la relación de concentraciones de todas las especies moleculares (neutras e ionizadas) en octanol dividida por la concentración de todas las especies en medios acuosos al pH especificado.
+\item cx\_logp: es el coeficiente de Paritituon octanol/agua calculado utilizando un método basado en fragmentos desarrollado por ACDlabs. 
+\item cx\_most\_apka: es el pKa para el grupo más ácido de la molécula.
+\item cx\_most\_bpka: es el pKa para el grupo más básico de la molécula.
+\item hba: número de aceptores de enlaces de hidrógeno.
+\item hba\_lipsinki: número de nitrógenos y oxígenos en la molécula.
+\item hbd: número de aceptores de enlaces de hidrógeno.
+\item hbd\_lipsinki: número de hidrógenes unidos a átomos de nitrógeno u oxígeno.
+\item heavy\_atomos: número de moléculas que no sean hidrógeno en la moléula.
+\item molecular\_species: descripción de la especie predominante con pH 7.4. Puede ser ACID, BASE, NEUTRAL o ZWITTERION.
+\item mw\_freebase: peso molecular de la forma padre de la molécula.
+\item mw\_monoistopic: a masa monoistópica del compuesto calculada como la suma de las masas de los isótopos más abundantes en el compuesto.
+\item psa: el área de la superficie polar se calcula mediante el método de P Erti. El cálculo rápido del área de superficie polar molecular es la suma de contribuciones basadas en fragmentos y su aplicación a la predicción de propiedades de transporte de fármacos, Ertl, P., Rohde, B., Selzer, P., J. Medicina. Chem. 2000, 43, 3714-3717.
+\item qed\_weight: esta es la estimación cuantitativa de la similitud con las drogas como se describe en: "Cuantificando la belleza química de las drogas” G. Richard Bickerton, Gaia V. Paolini, Jeremy Besnard, Sorel Muresana y Andrew L. Hopkins, Nature Chemistry, 2012, 4, 90-98 Los valores oscilan entre 0-1, donde 1 es el más parecido a una droga y 0 el menos parecido a una droga.
+\item ro3\_pass: Regla de 3 pases. Se sugiere que los compuestos que pasan estos criterios tienen más probabilidades de ser aciertos en la selección de fragmentos.
+\item rtb: número de enlaces rotativos en la molécula.
+
+\end{itemize}
+
+\newpage
